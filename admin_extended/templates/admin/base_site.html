@@ -1,0 +1,112 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% load settings_value %}
+
+{% block extrahead %}
+  <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
+
+
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link href="{% static 'admin_extended/css/extended.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'admin_extended/css/jquery-ui.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'admin_extended/css/theme.css' %}" rel="stylesheet" type="text/css">
+  <style>
+    #header {
+      background: {% settings_value "ADMIN_EXTENDED.ADMIN_HEADER_COLOR" "var(--header-bg)" %};
+    }
+  </style>
+
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous">
+  </script>
+
+  <script>
+    var DSwal = Swal.mixin({
+      showClass: {
+        backdrop: 'swal2-noanimation', // disable backdrop animation
+        popup: '',                     // disable popup animation
+        icon: ''                       // disable icon animation
+      },
+    })
+
+
+    var LoadingSwal = Swal.mixin({
+      title: 'Processing...',
+      html: 'Please wait...',
+      showClass: {
+        backdrop: 'swal2-noanimation', // disable backdrop animation
+        popup: '',                     // disable popup animation
+        icon: ''                       // disable icon animation
+      },
+      allowEscapeKey: false,
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading()
+      }
+    });
+
+
+    $(document).ready(function () {
+      let caption = $('#nav-sidebar caption')
+
+      // Open current menu base on url
+      caption.each(function () {
+        if (window.location.href.includes($(this).data('app-url'))) {
+          $(this).next().toggle(0);
+        }
+      })
+
+      caption.click(function (e) {
+        $('#nav-sidebar tbody').hide()
+        $(this).next().toggle(0);
+      })
+
+
+      // Open all menu when searching
+      $('#nav-filter').keydown(function (e) {
+
+        if($(this).val().trim()) {
+          $('#nav-sidebar tbody').show()
+        } else {
+          caption.each(function () {
+            if (window.location.href.includes($(this).data('app-url'))) {
+              $(this).next().show();
+            } else {
+              $(this).next().hide();
+            }
+          })
+        }
+      })
+
+      // Handle btn bookmark
+      $('.btn-bookmark').click(function () {
+        let name = prompt('Bookmark name:', '');
+        if (name) {
+          let data = {
+            name: name,
+            url: window.location.pathname
+          }
+          $.post(
+            "{% url 'admin:admin_extended_add_bookmark' %}",
+            data,
+            function (data) {
+              alert(`Bookmark ${name} added`);
+            }
+          );
+        }
+
+      })
+    })
+  </script>
+
+{% endblock %}
+
+{% block footer %}
+  <div id="footer">
+    {% if perms.admin_extended.can_add_bookmark %}
+      <span class="btn-bookmark">&#9733;</i></span>
+    {% endif %}
+  </div>
+{% endblock %}
