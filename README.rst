@@ -22,7 +22,7 @@ Install
 
 ::
 
-    pip install git+https://github.com/santhosh-programmer/django-admin-extended
+    pip install git+https://github.com/santhosh-programmer/django-admin-extended.git
 
 Setting
 =======
