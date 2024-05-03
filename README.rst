@@ -1,6 +1,8 @@
-Django Admin Extended
-===================
 
+Django Admin Extended
+=====================
+
+    
 Enhance UI/UX of django admin
 
 **Features:**
