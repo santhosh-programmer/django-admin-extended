@@ -53,7 +53,7 @@ Setting
 
 
 Basic Usage
-=======
+===========
 
 .. code:: python
 
@@ -184,12 +184,15 @@ This function will automatic register admin for all unregistered model
 
 
 Screenshots
-=======
+===========
 - Change list page
+
 .. image:: screenshots/change-list-page.png?raw=true
 
 - Read only mode
+
 .. image:: screenshots/view-mode.png?raw=true
 
 - Edit mode
+
 .. image:: screenshots/edit-mode.png?raw=true
